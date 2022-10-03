@@ -1,0 +1,59 @@
+import numpy as np
+
+    #D_eff = 10**-10
+    #k=4*10**-9
+    #S_anal = 10**-8
+# CECI EST UNE MODIFICATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+def diff_transitoire(prm,dt,n,R,t):
+    dr = R/(n-1)
+    r = np.linspace(0,0.5,n)
+    T_S = np.linspace(0,0,n)
+    A = np.zeros([n,n])
+    b = np.linspace(0,0,n)
+    temps = 0
+    
+    while temps < t:
+        for i in range(0,n):
+            ceta = prm.D_eff*dt*((1/(r[i]*dr)) + (1/dr**2))
+            beta = prm.D_eff*dt*((-1/(r[i]*dr)) -2*(1/dr**2) - 1 - prm.k/prm.D_eff)
+            alpha = prm.D_eff*dt*(1/dr**2)
+            if i == 0:
+                A[0,0] = 1
+                T_S[i] = 0
+                b[i] = prm.C_i 
+            elif i == n-1:
+                A[i,i-1] = -1
+                A[i,i] = 1
+                b[i] = 0
+            else:    
+                A[i,i-1] = alpha
+                A[i,i] = beta
+                A[i,i+1] = ceta
+                b[i] = -b[i]
+        b = np.linalg.solve(A,b)
+        temps = temps + dt
+    return b
+
+def diff_stationnaire(prm,n,R):
+    r = np.linspace(0,0.5,n)
+    dr = R/(n-1)
+    A = np.zeros([n,n])
+    b = np.linspace(0,0,n)
+    for i in range(0,n):
+        alpha = (1/(r[i]*dr)) + 1/dr**2
+        beta = (-1/(r[i]*dr)) - 2/dr**2 -prm.k
+        ceta = 1/dr**2
+        if i == 0:
+            A[i,i] = 1
+            b[i] = prm.C_i
+        elif i == n-1:
+            A[i,i] = -1
+            A[i,i-1] = 1
+            b[i] = 0
+        else: 
+            A[i,i+1] = alpha
+            A[i,i] = beta
+            A[i,i-1] = ceta
+            b[i] = 0
+    Rep = np.linalg.solve(A,b)
+    return Rep
