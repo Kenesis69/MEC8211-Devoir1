@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     # Analyse de convergence - ordre 2
     with open("convergence_ordre2.dat", "w") as file:
-        file.write("CONVERGENCE DU SHÉMA D'ORDRE 2 EN ESPACE")
+        file.write("CONVERGENCE DU SHÉMA D'ORDRE 2 EN ESPACE\n")
         file.write("NPOINTS L1 L2 LINF\n")
         for i in range(0,10):
             # Calcul des solutions
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     # Analyse de convergence - ordre 1
     with open("convergence_ordre1.dat", "w") as file:
-        file.write("CONVERGENCE DU SHÉMA D'ORDRE 2 EN ESPACE")
+        file.write("CONVERGENCE DU SHÉMA D'ORDRE 1 EN ESPACE\n")
         file.write("NPOINTS L1 L2 LINF\n")
         for i in range(0,10):
             # Calcul des solutions
